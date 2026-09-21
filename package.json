@@ -1,0 +1,12 @@
+{
+  "name": "typesafe-jev-color-guesser",
+  "version": "1.0.0",
+  "description": "Interactive color palette guessing using TypeSafe JEV System One model",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["typesafe", "jev", "ai", "colors", "system-one"],
+  "author": "",
+  "license": "MIT"
+}

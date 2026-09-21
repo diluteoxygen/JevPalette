@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TypeSafe JEV Color Guesser · Closed Beta</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <!-- Top-Left Color Count Selector & Beta User Info -->
+    <div class="top-left-controls">
+      <div class="control-group">
+        <label for="color-count-select">Colors</label>
+        <select id="color-count-select">
+          <option value="all" selected>All</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="8">8</option>
+          <option value="12">12</option>
+        </select>
+      </div>
+
+      <div id="beta-badge" class="beta-badge" style="display: none;">
+        <span id="beta-user-email"></span>
+        <button id="logout-btn" class="logout-link" title="Leave Closed Beta">sign out</button>
+      </div>
+    </div>
+
+    <!-- Top Half: Centered Input -->
+    <div class="top-half">
+      <div class="input-container">
+        <input 
+          type="text" 
+          id="noun-input" 
+          placeholder=""
+          value="tomato"
+          autocomplete="off" 
+          autocorrect="off" 
+          autocapitalize="off" 
+          spellcheck="false"
+          autofocus 
+        />
+      </div>
+
+      <!-- Action toolbar right above the bar chart -->
+      <div class="bar-toolbar">
+        <button id="copy-palette-btn" class="toolbar-btn" type="button">
+          Copy CSS Palette
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Half: Full-bleed Animated Bar Chart -->
+    <div class="bottom-half">
+      <div id="palette-bar" class="palette-bar"></div>
+    </div>
+  </div>
+
+  <!-- Closed Beta Gate Modal (Strict Server Enforcement) -->
+  <div id="beta-gate-modal" class="beta-modal-overlay">
+    <div class="beta-modal-card">
+      <div class="beta-modal-header">
+        <div class="beta-tag">CLOSED BETA</div>
+        <h2>TypeSafe JEV · Colors</h2>
+        <p>Invite-only access. Enter your Gmail address and 6-digit access code to unlock.</p>
+      </div>
+
+      <form id="beta-gate-form" class="beta-form" novalidate>
+        <div id="beta-error" class="beta-error-box" style="display: none;"></div>
+
+        <div class="form-field">
+          <label for="beta-email">Gmail Address</label>
+          <input 
+            type="email" 
+            id="beta-email" 
+            placeholder="you@gmail.com" 
+            required 
+            autocomplete="email"
+          />
+          <span class="field-hint">Only @gmail.com addresses accepted</span>
+        </div>
+
+        <div class="form-field">
+          <label for="beta-code">6-Digit Access Code</label>
+          <input 
+            type="text" 
+            id="beta-code" 
+            placeholder="000000" 
+            maxlength="6" 
+            inputmode="numeric" 
+            pattern="[0-9]{6}" 
+            required 
+            autocomplete="one-time-code"
+          />
+        </div>
+
+        <button type="submit" id="beta-submit-btn" class="beta-submit-btn">
+          Unlock Access
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Minimal Feedback Toast -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
