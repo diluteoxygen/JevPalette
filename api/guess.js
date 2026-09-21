@@ -85,18 +85,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  // 1. STRICT SECURITY GATE: Enforce Closed Beta Session Token
-  const token = extractTokenFromRequest(req);
-  const session = verifySessionToken(token);
-
-  if (!session) {
-    res.status(401).json({
-      error: 'Closed beta access required. Please enter your valid 6-digit invite code and Gmail address.',
-      requiresAuth: true,
-    });
-    return;
-  }
-
+  // Closed Beta Gate disabled: open access for all users
   // 2. Parse noun input
   let noun = '';
   if (req.method === 'GET') {

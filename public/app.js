@@ -44,24 +44,20 @@ function showToast(message) {
 }
 
 /**
- * Show / hide the Closed Beta Gate modal
+ * Closed beta gate disabled: keep modal hidden
  */
 function showBetaGate(errorMessage = null) {
-  betaGateModal.classList.remove('hidden');
-  betaBadge.style.display = 'none';
-  if (errorMessage) {
-    betaErrorBox.textContent = errorMessage;
-    betaErrorBox.style.display = 'block';
-  } else {
-    betaErrorBox.style.display = 'none';
+  if (betaGateModal) {
+    betaGateModal.classList.add('hidden');
+    betaGateModal.style.display = 'none';
   }
+  if (betaBadge) betaBadge.style.display = 'none';
 }
 
 function hideBetaGate(email) {
-  betaGateModal.classList.add('hidden');
-  if (email) {
-    betaUserEmailSpan.textContent = email;
-    betaBadge.style.display = 'flex';
+  if (betaGateModal) {
+    betaGateModal.classList.add('hidden');
+    betaGateModal.style.display = 'none';
   }
 }
 
@@ -213,14 +209,6 @@ async function fetchColors(noun) {
       signal: currentAbortController.signal,
     });
 
-    if (res.status === 401 || res.status === 403) {
-      // Gate triggered: unauthorized or session expired
-      sessionToken = null;
-      localStorage.removeItem('beta_token');
-      showBetaGate('Your session has expired or invite code is required. Please verify.');
-      return;
-    }
-
     if (!res.ok) {
       throw new Error(`HTTP error ${res.status}`);
     }
@@ -354,33 +342,15 @@ logoutBtn.addEventListener('click', () => {
   showBetaGate('You have signed out of the closed beta.');
 });
 
-// On Page Load: Check session validity
-async function initSession() {
-  if (!sessionToken) {
-    showBetaGate();
-    return;
+// On Page Load: Fetch initial colors directly
+function initApp() {
+  if (betaGateModal) {
+    betaGateModal.classList.add('hidden');
+    betaGateModal.style.display = 'none';
   }
-
-  try {
-    const res = await fetch('/api/session', {
-      headers: { 'Authorization': `Bearer ${sessionToken}` },
-    });
-    const data = await res.json();
-
-    if (data.authenticated) {
-      hideBetaGate(data.email);
-      if (inputEl.value) {
-        fetchColors(inputEl.value);
-      }
-    } else {
-      sessionToken = null;
-      localStorage.removeItem('beta_token');
-      showBetaGate();
-    }
-  } catch (err) {
-    console.error('Session check error:', err);
-    showBetaGate();
+  if (inputEl && inputEl.value) {
+    fetchColors(inputEl.value);
   }
 }
 
-initSession();
+initApp();
